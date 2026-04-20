@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           Int            @id @default(autoincrement())
+  email        String         @unique
+  passwordHash String         @map("password_hash")
+  trips        Trip[]
+  fishingSpots FishingSpot[]
+
+  @@map("users")
+}
+
+model Trip {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  waterBody String   @map("water_body")
+  date      DateTime @db.Date
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  catches   Catch[]
+
+  @@map("trips")
+}
+
+model Catch {
+  id           Int      @id @default(autoincrement())
+  tripId       Int      @map("trip_id")
+  species      String
+  weightLbs    Float    @map("weight_lbs")
+  lengthInches Float    @map("length_inches")
+  gender       String?
+  timeCaught   DateTime @map("time_caught")
+  pictureUrl   String?  @map("picture_url")
+
+  trip         Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
+
+  @@map("catches")
+}
+
+model FishingSpot {
+  id        Int     @id @default(autoincrement())
+  userId    Int     @map("user_id")
+  name      String
+  latitude  Float
+  longitude Float
+  isPublic  Boolean @default(false) @map("is_public")
+
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("fishing_spots")
+}
