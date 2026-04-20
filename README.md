@@ -39,6 +39,4 @@ REST API for tracking fishing trips, catches, and fishing spots with JWT authent
 
 - All protected endpoints require `Authorization: Bearer <token>`.
 - Fishing spots are public only when `isPublic` is true.
-- Catch creation validates that the selected trip belongs to the logged-in user.# Final Project Template
-
-This repository provides the **folder structure** for your team’s final project. All implementation is left to students.
+- Catch creation validates that the selected trip belongs to the logged-in user.
